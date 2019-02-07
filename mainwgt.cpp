@@ -55,6 +55,10 @@ MainWgt::MainWgt(QWidget *parent) :
     connect( cli, &TcpClient::signalDisconnected,
              this, &MainWgt::slotDisconnect );
 
+    // Отключение клиента
+    connect( this, &MainWgt::signalDisconnect,
+              cli, &TcpClient::slotDisconnect );
+
     // Переподключение
     connect( this, &MainWgt::signalReconnect,
              cli, &TcpClient::slotReconnect );
@@ -174,5 +178,12 @@ void MainWgt::on_btnSendMsg_clicked()
     emit signalSendData( toQByteArray( msg ) );
 
     Info("Сообщение отправлено");
+}
+//===================================================================
+// Отключение от сети при выключении клиента
+void MainWgt::closeEvent(QCloseEvent *event)
+{
+    emit signalDisconnect();
+    event->accept();
 }
 //===================================================================

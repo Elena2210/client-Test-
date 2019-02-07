@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPixmap>
 #include <QLabel>
+#include <QCloseEvent>
 
 #include "headers/client_cdgrms.h"
 #include "headers/server_cdgrms.h"
@@ -27,6 +28,9 @@ signals:
     // Отправка сообщения
     void signalSendData( QByteArray );
 
+    // отключение клиента от сети
+    void signalDisconnect ();
+
 public slots:
     // по установке TCP соединения
     void slotConnect();
@@ -47,6 +51,10 @@ private slots:
 
     // Отправка данных
     void on_btnSendMsg_clicked();
+
+private:
+    // Отключение от сети при закрытии
+    void closeEvent( QCloseEvent * event );
 
 private:
     Ui::MainWgt *ui;
